@@ -1,3 +1,0 @@
-praha: 12345678
-cesky krumlov: 988652
-pilsen: 789845
