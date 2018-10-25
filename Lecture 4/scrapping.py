@@ -1,34 +1,60 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 20 16:42:13 2017
-
-@author: pc
-"""
-
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
 Created on Mon Apr 10 08:09:25 2017
 
 @author: pablo
 """
 
 # https://automatetheboringstuff.com/chapter11/
+# A much shorter version: 
+#https://gist.github.com/bradmontgomery/1872970
 
+
+# BeautifulSoup docs:
+# https://www.crummy.com/software/BeautifulSoup/bs4/doc/
 
 import requests, bs4
 import codecs
 
-res = requests.get('http://ihned.cz')
+
+##################################################################
+### Scrapping Prague's wikipedia
+##################################################################
+res = requests.get('https://en.wikipedia.org/wiki/Prague')
 
 res.status_code # Status: 200 is ok, 404 is not found
 
-page = bs4.BeautifulSoup(res.text, "lxml")
+## Parse response with res.text or res.content. "lxml" is the recommended parser
+page = bs4.BeautifulSoup(res.content, "lxml")
+
+# Print the page to see that format is correct
+page
+
+unis = page.select('#Public_universities')[0].find_next('ul').find_all('li')
+                   
+for uni in unis:
+    print(uni.text)
+
+
+##################################################################
+### Hospodarske noviny: top 10
+##################################################################
+res = requests.get('http://ihned.cz')
+
+page = bs4.BeautifulSoup(res.content, "lxml") 
+
+
+# Get all links
+for link in page.find_all('a'):
+    print(link.get('href'))
+
 
 # Titles of first page articles
-headlines = page.select(".article-title")
+headlines = page.find_all("div", class_="stats-article ga-edl ga-edl-most_read")
 
 type(headlines) #It's a list! so we can iterate
+len(headlines)
+
 
 for h in headlines:
     print('*'*10)
@@ -36,42 +62,31 @@ for h in headlines:
 
 
 # Parse it for something else
-urls = [h.find('a')['href'] for h in headlines]
-desc = [h.text for h in headlines]
+urls = ['http:'+h.find('a')['href'] for h in headlines]
+urls
+desc = [h.find('a').text for h in headlines]
    
+
+# Remove those cute hats
+import unidecode
+unidecode.unidecode(desc[0])
+
 
 # Save the data
 with codecs.open('demo.csv','w', encoding='utf8') as f:
-    for h in headlines:
-        f.write('http:'+h.find('a')['href']+'|'+h.text+'\n')
-f.close()    
-
-### SCRAPPING ROHLIK.CSV
-
-res = requests.get('https://www.rohlik.cz/c300103000-maso-a-ryby')
-page = bs4.BeautifulSoup(res.text, "lxml")
-
-prods = page.select('.product__right')
-
-for p in prods:
-    print("Product name: ", p.select('.product__name')[0].text)
-
-# Mmm... whitespaces
-p.select('.product__name')[0].text.strip()    
-    
-
-# Here we go again
-with codecs.open('prices_rohlik.csv','w', encoding='utf8') as f:
-    for p in prods:
-        prod = p.select('.product__name')[0].text
-        prod = prod.strip()
-        price_per_kilo = p.select('.product__price span')[0].text
-        f.write(prod+'|'+price_per_kilo+'\n')        
+    for h in zip(urls,desc):
+        f.write(h[0]+';'+h[1]+'\n')
 f.close()    
 
 
-## EXERCISE
+### EXERCISE: Can you modify the code to save the urls without diacritics?
+## how about including the authors too?
+authors = [h.find('a')['data-author'] for h in headlines]
 
+
+##################################################################
+## EXERCISE: Parsing that horrible Cinemacity website
+##################################################################
 res = requests.get("http://cinemacity.cz/scheduleInfo?locationId=1010105&date=null&venueTypeId=0&hideSite=0&openedFromPopup=1")
 page = bs4.BeautifulSoup(res.text, "lxml")
 

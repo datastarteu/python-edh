@@ -158,11 +158,5 @@ Assuming an initial employment distribution (0.
 Hint: np.dot(P,x) where x is the distribution
 '''
 
-
-
-
-
-
-
-# A Python joke :)
+# Python is so powerful, you can do many things :)
 import antigravity
