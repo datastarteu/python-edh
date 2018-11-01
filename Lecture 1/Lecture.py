@@ -125,36 +125,11 @@ my_vals
 sum([x*x for x in my_vals])
 sum([x**2 for x in my_vals])    
  
-# Example: Calculate the dot product 
-# between two vectors
-
-# First, we need to know the length
-len(x) # Calculates the length of an object
-
-
-x = [1,2,3]
-y = [4,5,6]
-dot_product = 0
-
-for i in range(len(x)):
-    #dot_product = dot_product + x[i]*y[i]
-    dot_product += x[i]*y[i]
-dot_product
-
-# calculate square root
-from math import sqrt
-sqrt(9)
-
-my_str = "ThIs is a StrinG" 
-  ## Write something that calculates number of
-  ## capital letters (4)
-# HINT: 
-# Try to use upper: my_str.upper()    
-my_str[3] 
-for i in range(len(my_str)):
-    print(my_str[i])
+# Example: Calculate the distance between two vectors
 
 #### 
+from math import sqrt
+
 x = [3,0]
 y = [0,4]
 dist = 0
@@ -162,8 +137,15 @@ for i in range(len(x)):
     dist += (x[i]-y[i])**2
 dist = sqrt(dist)
 dist
- 
- 
+
+# How can we re-write this?
+
+
+def my_dist(x,y):
+    dist2 = sum([(x[i]-y[i])**2 for i in range(len(x))])
+    dist = sqrt(dist2)
+    return dist
+    
     
     
     

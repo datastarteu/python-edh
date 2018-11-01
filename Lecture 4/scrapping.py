@@ -15,7 +15,7 @@ Created on Mon Apr 10 08:09:25 2017
 
 import requests, bs4
 import codecs
-
+import unidecode
 
 ##################################################################
 ### Scrapping Prague's wikipedia
