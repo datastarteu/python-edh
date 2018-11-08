@@ -94,7 +94,10 @@ d['last_name']
 d['address']
  
 
-### Loops
+###########################
+### Loops and list comprehension
+###########################
+
 x_vals = [1,2,3,4,5]
 for x in x_vals:
     print(x*x)
