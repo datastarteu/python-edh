@@ -67,10 +67,6 @@ df['ApplicantIncome'].plot.box()
 df['ApplicantIncome'].plot()
 
 
-## Pivot table
-df.pivot_table()
-
-
 ## Cross tab
 pd.crosstab(df['Gender'],
             df['Loan_Status'])
