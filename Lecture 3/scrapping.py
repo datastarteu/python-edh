@@ -15,7 +15,7 @@ Created on Mon Apr 10 08:09:25 2017
 
 import requests, bs4
 import codecs
-import unidecode
+#import unidecode
 
 ##################################################################
 ### Scrapping Prague's wikipedia
@@ -68,8 +68,8 @@ desc = [h.find('a').text for h in headlines]
    
 
 # Remove those cute hats
-import unidecode
-unidecode.unidecode(desc[0])
+#import unidecode
+#unidecode.unidecode(desc[0])
 
 
 # Save the data
